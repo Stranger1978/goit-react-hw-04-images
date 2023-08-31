@@ -1,39 +1,32 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import Style from './Searchbar.module.css';
 import { BsSearch } from 'react-icons/bs';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 
 
-export class Searchbar extends Component {
-  state = {
-        searchValue: '',
-    }
+export function Searchbar({ onSubmit }) {
+  const [searchValue, setSearchValue] = useState('');
   
-  handleChange = e => {
+  const handleChange = e => {
     const { value } = e.currentTarget;
-    this.setState({ searchValue: value });
+    setSearchValue(value);
   }; 
 
-    handleSubmit = e => {
+   const handleSubmit = e => {
       e.preventDefault();
-      const { searchValue } = this.state;
       if (searchValue.trim() === '') {
         return toast.warn('Enter new data for searh');
       }
       
-      this.props.onSubmit(searchValue);
-      this.reset();
+      onSubmit(searchValue);
+      setSearchValue('');
     };
     
-    reset = () => {
-    this.setState({searchValue: ''});
-    };
 
-  render() {
     return (
     <header className={Style.Searchbar}>
-        <form className={Style.SearchForm} onSubmit={this.handleSubmit}>
+        <form className={Style.SearchForm} onSubmit={handleSubmit}>
           <button type="submit" className={Style.SearchButton}>
            <BsSearch className={Style.ButtonIcon} />
           <span className={Style.SearchButtonLabel}>Search</span>
@@ -42,16 +35,15 @@ export class Searchbar extends Component {
         <input
           className={Style.SearchFormInput}
           type="text"
-          //autocomplete="off"
-          //autofocus
-          //  value={this.state.searchValue}
+           autoComplete="off"
+           autoFocus
+            value={searchValue}
             placeholder="Search images and photos"
-            onChange={this.handleChange}
+            onChange={handleChange}
         />
       </form>
     </header>
   )} 
-}
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
