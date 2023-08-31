@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const modalRoot = document.querySelector('#modal-root');
 
-export function Modal({ onClose, largeImageURL }) {
+export default function Modal({ onClose, largeImageURL }) {
 
     useEffect(() => {
         const handleKeyDown = e => {
@@ -18,21 +18,20 @@ export function Modal({ onClose, largeImageURL }) {
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         }
-    
     }, [onClose]);
   
     const handleBackDropClick = e => {
         if (e.currentTarget === e.target) {
-        onClose();
+            onClose();
         }
-     }
+    };
         return createPortal(
             <div className={Style.Overlay} onClick={handleBackDropClick}>
                 <div className={Style.Modal}>
                 <img src={largeImageURL} alt="" />
             </div>
             </div>,
-            modalRoot,
+            modalRoot
         );
     }
     
